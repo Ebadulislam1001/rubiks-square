@@ -12,7 +12,6 @@
         background-color: #555;
       }
       main {
-        width: 400px;
         margin: auto;
         display: flex;
         flex-direction: column;
@@ -23,11 +22,11 @@
       header {
         font-size: 24px;
         font-family: Courier, monospace;
-        margin-top: 20px;
-        margin-bottom: 10px;
+        /* margin: 10px; */
         text-decoration: underline;
       }
       #grid {
+        margin: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -68,9 +67,14 @@
         border: 2px solid #555;
         border-radius: 4px;
       }
-      #shuffle,
+      #reset-option {
+        margin: 15px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
       #reset {
-        margin: 4px, 24px;
         width: 96px;
       }
     </style>
@@ -81,6 +85,9 @@
         <h1>Rubiks Square</h1>
       </header>
       <section>
+        <div id="reset-option">
+          <button id="reset" onclick="reset()">RESET</button>
+        </div>
         <div id="grid">
           <div class="row">
             <div class="cell" id="cell-00" onclick="select(0,0)"></div>
@@ -140,8 +147,6 @@
             <button onclick="right()">&rArr;</button>
           </div>
           <button onclick="down()">&dArr;</button>
-          <button id="shuffle" onclick="shuffle()">shuffle</button>
-          <button id="reset" onclick="reset()">reset</button>
         </div>
       </footer>
     </main>
@@ -149,9 +154,11 @@
       const bold = "3px solid #000";
       const def = "1px solid #000";
       let X, Y;
+      set();
       reset();
 
-      function reset() {
+      function set() {
+        console.log("setting colors...");
         for (i = 0; i < 6; i++) {
           for (j = 0; j < 6; j++) {
             if (i < 3 && j < 3) {
@@ -166,7 +173,7 @@
           }
         }
       }
-      function shuffle() {
+      function reset() {
         console.log("shuffling...");
         for (t = 0; t < 9; t++) {
           x = Math.floor(Math.random() * 6);
