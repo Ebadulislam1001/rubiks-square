@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rubiks Square</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #555;
+      }
+      main {
+        width: 400px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #aaa;
+      }
+      header {
+        font-size: 24px;
+        font-family: Courier, monospace;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-decoration: underline;
+      }
+      #grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 3px solid #000;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      .cell {
+        height: 36px;
+        width: 36px;
+        margin: 12px;
+        background-color: #abc;
+        border: 1px solid #000;
+      }
+      #controls {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #control-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+      button {
+        margin: 4px 24px;
+        height: 36px;
+        width: 36px;
+        background-color: #fff;
+        border: 2px solid #555;
+        border-radius: 4px;
+      }
+      #shuffle,
+      #reset {
+        margin: 4px, 24px;
+        width: 96px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Rubiks Square</h1>
+      </header>
+      <section>
+        <div id="grid">
+          <div class="row">
+            <div class="cell" id="cell-00" onclick="select(0,0)"></div>
+            <div class="cell" id="cell-01" onclick="select(0,1)"></div>
+            <div class="cell" id="cell-02" onclick="select(0,2)"></div>
+            <div class="cell" id="cell-03" onclick="select(0,3)"></div>
+            <div class="cell" id="cell-04" onclick="select(0,4)"></div>
+            <div class="cell" id="cell-05" onclick="select(0,5)"></div>
+          </div>
+          <div class="row">
+            <div class="cell" id="cell-10" onclick="select(1,0)"></div>
+            <div class="cell" id="cell-11" onclick="select(1,1)"></div>
+            <div class="cell" id="cell-12" onclick="select(1,2)"></div>
+            <div class="cell" id="cell-13" onclick="select(1,3)"></div>
+            <div class="cell" id="cell-14" onclick="select(1,4)"></div>
+            <div class="cell" id="cell-15" onclick="select(1,5)"></div>
+          </div>
+          <div class="row">
+            <div class="cell" id="cell-20" onclick="select(2,0)"></div>
+            <div class="cell" id="cell-21" onclick="select(2,1)"></div>
+            <div class="cell" id="cell-22" onclick="select(2,2)"></div>
+            <div class="cell" id="cell-23" onclick="select(2,3)"></div>
+            <div class="cell" id="cell-24" onclick="select(2,4)"></div>
+            <div class="cell" id="cell-25" onclick="select(2,5)"></div>
+          </div>
+          <div class="row">
+            <div class="cell" id="cell-30" onclick="select(3,0)"></div>
+            <div class="cell" id="cell-31" onclick="select(3,1)"></div>
+            <div class="cell" id="cell-32" onclick="select(3,2)"></div>
+            <div class="cell" id="cell-33" onclick="select(3,3)"></div>
+            <div class="cell" id="cell-34" onclick="select(3,4)"></div>
+            <div class="cell" id="cell-35" onclick="select(3,5)"></div>
+          </div>
+          <div class="row">
+            <div class="cell" id="cell-40" onclick="select(4,0)"></div>
+            <div class="cell" id="cell-41" onclick="select(4,1)"></div>
+            <div class="cell" id="cell-42" onclick="select(4,2)"></div>
+            <div class="cell" id="cell-43" onclick="select(4,3)"></div>
+            <div class="cell" id="cell-44" onclick="select(4,4)"></div>
+            <div class="cell" id="cell-45" onclick="select(4,5)"></div>
+          </div>
+          <div class="row">
+            <div class="cell" id="cell-50" onclick="select(5,0)"></div>
+            <div class="cell" id="cell-51" onclick="select(5,1)"></div>
+            <div class="cell" id="cell-52" onclick="select(5,2)"></div>
+            <div class="cell" id="cell-53" onclick="select(5,3)"></div>
+            <div class="cell" id="cell-54" onclick="select(5,4)"></div>
+            <div class="cell" id="cell-55" onclick="select(5,5)"></div>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <div id="controls">
+          <button onclick="up()">&uArr;</button>
+          <div>
+            <button onclick="left()">&lArr;</button>
+            <button onclick="right()">&rArr;</button>
+          </div>
+          <button onclick="down()">&dArr;</button>
+          <button id="shuffle" onclick="shuffle()">shuffle</button>
+          <button id="reset" onclick="reset()">reset</button>
+        </div>
+      </footer>
+    </main>
+    <script>
+      const bold = "3px solid #000";
+      const def = "1px solid #000";
+      let X, Y;
+      reset();
+
+      function reset() {
+        for (i = 0; i < 6; i++) {
+          for (j = 0; j < 6; j++) {
+            if (i < 3 && j < 3) {
+              document.getElementById("cell-" + i + j).style.backgroundColor = "#F55";
+            } else if (i < 3 && j < 6) {
+              document.getElementById("cell-" + i + j).style.backgroundColor = "#55F";
+            } else if (i < 6 && j < 3) {
+              document.getElementById("cell-" + i + j).style.backgroundColor = "#5F5";
+            } else if (i < 6 && j < 6) {
+              document.getElementById("cell-" + i + j).style.backgroundColor = "#FF5";
+            }
+          }
+        }
+      }
+      function shuffle() {
+        console.log("shuffling...");
+        for (t = 0; t < 9; t++) {
+          x = Math.floor(Math.random() * 6);
+          y = Math.floor(Math.random() * 6);
+          select(x, y);
+          up();
+          x = Math.floor(Math.random() * 6);
+          y = Math.floor(Math.random() * 6);
+          select(x, y);
+          left();
+          x = Math.floor(Math.random() * 6);
+          y = Math.floor(Math.random() * 6);
+          select(x, y);
+          down();
+          x = Math.floor(Math.random() * 6);
+          y = Math.floor(Math.random() * 6);
+          select(x, y);
+          right();
+        }
+        unselect();
+        console.log("shuffled successfully !");
+        X = 6;
+        Y = 6;
+      }
+      function unselect() {
+        for (i = 0; i < 6; i++) {
+          for (j = 0; j < 6; j++) {
+            document.getElementById("cell-" + i + j).style.border = def;
+            document.getElementById("cell-" + i + j).style.height = "36px";
+            document.getElementById("cell-" + i + j).style.width = "36px";
+          }
+        }
+      }
+      function select(x, y) {
+        X = x;
+        Y = y;
+        unselect();
+        for (i = 0; i < 6; i++) {
+          document.getElementById("cell-" + x + i).style.border = bold;
+          document.getElementById("cell-" + x + i).style.height = "32px";
+          document.getElementById("cell-" + x + i).style.width = "32px";
+          document.getElementById("cell-" + i + y).style.border = bold;
+          document.getElementById("cell-" + i + y).style.height = "32px";
+          document.getElementById("cell-" + i + y).style.width = "32px";
+        }
+      }
+      function up() {
+        const temp = document.getElementById("cell-" + 0 + Y).style.backgroundColor;
+        for (i = 0; i < 5; i++) {
+          document.getElementById("cell-" + i + Y).style.backgroundColor = document.getElementById("cell-" + (i + 1) + Y).style.backgroundColor;
+        }
+        document.getElementById("cell-" + 5 + Y).style.backgroundColor = temp;
+      }
+      function left() {
+        const temp = document.getElementById("cell-" + X + 0).style.backgroundColor;
+        for (i = 0; i < 5; i++) {
+          document.getElementById("cell-" + X + i).style.backgroundColor = document.getElementById("cell-" + X + (i + 1)).style.backgroundColor;
+        }
+        document.getElementById("cell-" + X + 5).style.backgroundColor = temp;
+      }
+      function right() {
+        const temp = document.getElementById("cell-" + X + 5).style.backgroundColor;
+        for (i = 5; i > 0; i--) {
+          document.getElementById("cell-" + X + i).style.backgroundColor = document.getElementById("cell-" + X + (i - 1)).style.backgroundColor;
+        }
+        document.getElementById("cell-" + X + 0).style.backgroundColor = temp;
+      }
+      function down() {
+        const temp = document.getElementById("cell-" + 5 + Y).style.backgroundColor;
+        for (i = 5; i > 0; i--) {
+          document.getElementById("cell-" + i + Y).style.backgroundColor = document.getElementById("cell-" + (i - 1) + Y).style.backgroundColor;
+        }
+        document.getElementById("cell-" + 0 + Y).style.backgroundColor = temp;
+      }
+    </script>
+  </body>
+</html>
