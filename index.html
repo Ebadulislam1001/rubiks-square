@@ -70,12 +70,23 @@
       #reset-option {
         margin: 15px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
       }
       #reset {
         width: 96px;
+      }
+      #moveCount {
+        margin: 4px 24px;
+        height: 30px;
+        width: 90px;
+        background-color: #fff;
+        border: 2px solid #555;
+        font-size: 20px;
+        font-style: bold;
+        text-align: center;
+        padding-left: 15px;
       }
     </style>
   </head>
@@ -141,6 +152,7 @@
       </section>
       <footer>
         <div id="controls">
+          <input id="moveCount" type="number" readonly />
           <button onclick="up()">&uArr;</button>
           <div>
             <button onclick="left()">&lArr;</button>
@@ -151,12 +163,6 @@
       </footer>
     </main>
     <script>
-      const bold = "3px solid #000";
-      const def = "1px solid #000";
-      let X, Y;
-      set();
-      reset();
-
       function set() {
         console.log("setting colors...");
         for (i = 0; i < 6; i++) {
@@ -195,8 +201,10 @@
         }
         unselect();
         console.log("shuffled successfully !");
-        X = 6;
-        Y = 6;
+        moveCount = 0;
+        document.getElementById("moveCount").value = moveCount;
+        X = 0;
+        Y = 0;
       }
       function unselect() {
         for (i = 0; i < 6; i++) {
@@ -221,6 +229,8 @@
         }
       }
       function up() {
+        moveCount += 1;
+        document.getElementById("moveCount").value = moveCount;
         const temp = document.getElementById("cell-" + 0 + Y).style.backgroundColor;
         for (i = 0; i < 5; i++) {
           document.getElementById("cell-" + i + Y).style.backgroundColor = document.getElementById("cell-" + (i + 1) + Y).style.backgroundColor;
@@ -228,6 +238,8 @@
         document.getElementById("cell-" + 5 + Y).style.backgroundColor = temp;
       }
       function left() {
+        moveCount += 1;
+        document.getElementById("moveCount").value = moveCount;
         const temp = document.getElementById("cell-" + X + 0).style.backgroundColor;
         for (i = 0; i < 5; i++) {
           document.getElementById("cell-" + X + i).style.backgroundColor = document.getElementById("cell-" + X + (i + 1)).style.backgroundColor;
@@ -235,6 +247,8 @@
         document.getElementById("cell-" + X + 5).style.backgroundColor = temp;
       }
       function right() {
+        moveCount += 1;
+        document.getElementById("moveCount").value = moveCount;
         const temp = document.getElementById("cell-" + X + 5).style.backgroundColor;
         for (i = 5; i > 0; i--) {
           document.getElementById("cell-" + X + i).style.backgroundColor = document.getElementById("cell-" + X + (i - 1)).style.backgroundColor;
@@ -242,12 +256,22 @@
         document.getElementById("cell-" + X + 0).style.backgroundColor = temp;
       }
       function down() {
+        moveCount += 1;
+        document.getElementById("moveCount").value = moveCount;
         const temp = document.getElementById("cell-" + 5 + Y).style.backgroundColor;
         for (i = 5; i > 0; i--) {
           document.getElementById("cell-" + i + Y).style.backgroundColor = document.getElementById("cell-" + (i - 1) + Y).style.backgroundColor;
         }
         document.getElementById("cell-" + 0 + Y).style.backgroundColor = temp;
       }
+
+      const bold = "3px solid #000";
+      const def = "1px solid #000";
+      let X, Y;
+      let moveCount = 0;
+      document.getElementById("moveCount").value = moveCount;
+      set();
+      reset();
     </script>
   </body>
 </html>
